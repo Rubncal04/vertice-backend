@@ -3,7 +3,6 @@ package handler
 import (
 	"context"
 	"net/http"
-	"strings"
 	"vertice-backend/pkg"
 
 	"vertice-backend/internal/domain"
@@ -65,7 +64,7 @@ func (h *UserHandler) Login(c echo.Context) error {
 }
 
 func (h *UserHandler) Profile(c echo.Context) error {
-	userID, err := getUserIDFromToken(c)
+	userID, err := pkg.GetUserIDFromJWTContext(c)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, echo.Map{"error": "invalid token"})
 	}
@@ -74,20 +73,4 @@ func (h *UserHandler) Profile(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, echo.Map{"error": "user not found"})
 	}
 	return c.JSON(http.StatusOK, echo.Map{"id": user.ID, "name": user.Name, "email": user.Email})
-}
-
-func getUserIDFromToken(c echo.Context) (uint, error) {
-	header := c.Request().Header.Get("Authorization")
-	if header == "" {
-		return 0, echo.ErrUnauthorized
-	}
-	parts := strings.Split(header, " ")
-	if len(parts) != 2 || parts[0] != "Bearer" {
-		return 0, echo.ErrUnauthorized
-	}
-	claims, err := pkg.ParseJWT(parts[1])
-	if err != nil {
-		return 0, echo.ErrUnauthorized
-	}
-	return claims.UserID, nil
 }
