@@ -6,7 +6,14 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func RegisterAllRoutes(e *echo.Echo, userService *service.UserService, productService *service.ProductService) {
-	RegisterUserRoutes(e, userService)
-	RegisterProductRoutes(e, productService)
+type AppDependencies struct {
+	UserService    *service.UserService
+	ProductService *service.ProductService
+	OrderService   *service.OrderService
+}
+
+func RegisterAllRoutes(e *echo.Echo, deps AppDependencies) {
+	RegisterUserRoutes(e, deps.UserService)
+	RegisterProductRoutes(e, deps.ProductService)
+	RegisterOrderRoutes(e, deps.OrderService)
 }

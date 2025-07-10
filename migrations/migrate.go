@@ -10,5 +10,7 @@ func AutoMigrateAll(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&domain.User{},
 		&domain.Product{},
+		&domain.Order{},
+		&domain.OrderItem{},
 	)
 }

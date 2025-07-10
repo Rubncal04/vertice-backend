@@ -29,11 +29,20 @@ func main() {
 	userService := service.NewUserService(userRepo)
 	productService := service.NewProductService(productRepo)
 
+	orderRepo := repository.NewOrderGormRepository()
+	orderService := service.NewOrderService(orderRepo, productRepo)
+
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	routes.RegisterAllRoutes(e, userService, productService)
+	routesDependencies := routes.AppDependencies{
+		UserService:    userService,
+		ProductService: productService,
+		OrderService:   orderService,
+	}
+
+	routes.RegisterAllRoutes(e, routesDependencies)
 
 	port := os.Getenv("PORT")
 	if port == "" {
