@@ -66,16 +66,26 @@ swag init -g cmd/main.go
 ## Docker Usage
 Build and run the app using Docker:
 
-1. Build the image:
-   ```sh
-   docker build -t vertice-backend .
-   ```
-2. Run the container:
-   ```sh
-   docker run --env-file .env -p 8080:8080 vertice-backend
-   ```
-
-(You can add a `docker-compose.yml` if you want to run the app with a database easily.)
+- Build all services (app & database):
+  ```sh
+  docker-compose up --build
+  ```
+- Stop services:
+  ```sh
+  docker-compose down
+  ```
+- Watch logs on real time:
+  ```sh
+  docker-compose logs -f
+  ```
+- Rebuild image of the app:
+  ```sh
+  docker-compose build --no-cache
+  ```
+- Access to the PostgreSQL database from container:
+  ```sh
+  docker-compose exec db psql -U $DB_USER -d $DB_NAME
+  ```
 
 ## Example API Usage
 
