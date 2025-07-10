@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 
 	"vertice-backend/config"
@@ -55,6 +56,9 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.GET("/", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{"message": "Vertice Backend is running"})
+	})
 
 	// Swagger documentation route
 	e.GET("/swagger/*", echoSwagger.WrapHandler)

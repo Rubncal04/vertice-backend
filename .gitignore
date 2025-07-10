@@ -1,4 +1,17 @@
+# Environment files
 .env
+.env.*
+
+# Binaries
+main
+vertice-backend
+*.exe
+*.out
+*.test
+
+# Temporary files
+/tmp/
+*.log
+
+# Development tools
 .air.toml
-go.sum
-tmp/
