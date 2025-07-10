@@ -13,7 +13,27 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	_ "vertice-backend/docs"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
+
+// @title Vertice Backend API
+// @version 1.0
+// @description API System for managing products and orders of Vertice
+// @termsOfService http://swagger.io/terms/
+
+// @license.name MIT
+// @license.url https://opensource.org/licenses/MIT
+
+// @host localhost:8080
+// @BasePath /api/v1
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and JWT token.
 
 func main() {
 	_ = godotenv.Load()
@@ -35,6 +55,9 @@ func main() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+
+	// Swagger documentation route
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
 	routesDependencies := routes.AppDependencies{
 		UserService:    userService,
